@@ -1,24 +1,26 @@
 import { FC } from 'react';
-import { Issue } from '../interfaces/issue';
+import { Issue, State } from '../interfaces/issue';
 import { IssueItem } from './IssueItem';
 
 interface Props {
     issues: Issue[];
+    state?: State;
+    onStateChanged: (state?: State) => void;
 }
 
-export const IssueList:FC<Props> = ({issues}) => {
+export const IssueList:FC<Props> = ({issues, state, onStateChanged}) => {
     return (
         <div className="card border-white">
             <div className="card-header bg-dark">
                 <ul className="nav nav-pills card-header-pills">
                     <li className="nav-item">
-                        <a className="nav-link active">All</a>
+                        <a onClick={() => onStateChanged()} className={`nav-link ${!state ? 'active':''}`}>All</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link">Open</a>
+                        <a onClick={() => onStateChanged(State.Open)} className={`nav-link ${state == State.Open ? 'active':''}`}>Open</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link">Closed</a>
+                        <a onClick={() => onStateChanged(State.Closed)} className={`nav-link ${state == State.Closed ? 'active':''}`}>Closed</a>
                     </li>
                 </ul>
             </div>
@@ -28,7 +30,7 @@ export const IssueList:FC<Props> = ({issues}) => {
                         <IssueItem key={issue.id} issue={issue} />
                     ))
                 
-                }                
+                }
             </div>
         </div>
     )
